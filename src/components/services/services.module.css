@@ -1,0 +1,71 @@
+.services {
+  background: url(/images/9.jpg);
+  background-size: cover;
+  padding: 80px 5%;
+  color: rgb(var(--white));
+  position: relative;
+  isolation: isolate;
+  background-attachment: fixed;
+  /* margin-top: 50px; */
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--black), 0.5);
+  z-index: -1;
+}
+
+.cards {
+  max-width: 1200px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2px;
+  justify-content: center;
+  margin-top: 50px;
+}
+.card {
+  background: rgb(var(--black), 0.7);
+  text-align: center;
+  padding: 30px;
+}
+.card:hover {
+  background: rgb(var(--black), 0.2);
+}
+
+.center {
+  text-align: center;
+  font-weight: 200;
+  font-size: 4rem;
+}
+
+.card > div:first-child {
+  font-size: 4rem;
+}
+
+.title {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}
+
+.card li {
+  list-style: none;
+  margin-block: 20px;
+  padding-left: 30px;
+  position: relative;
+  max-width: fit-content;
+  margin-inline: auto;
+}
+.card li::before {
+  content: "✔ ";
+  position: absolute;
+  left: 0;
+  color: rgb(var(--orange));
+}
+
+/* .card li::marker {
+  content: "✔  ";
+  margin-right: 20px;
+  color: rgb(var(--orange));
+} */

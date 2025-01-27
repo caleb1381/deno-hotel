@@ -1,0 +1,117 @@
+.nav {
+  color: rgb(var(--white));
+  background: rgb(var(--dark-blue));
+  padding: 10px 5%;
+  width: 100%;
+}
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  /* Other styles for when the component is sticky */
+}
+
+.nav nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav main {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav nav section {
+  display: none;
+}
+
+.nav:has(input:checked) section {
+  z-index: 20;
+  translate: 0 0;
+}
+
+.nav section > div {
+  padding: 2px 24px;
+  position: relative;
+}
+.nav section > div:hover::after,
+.nav section > div:hover::before {
+  opacity: 1;
+}
+
+.nav section > div::after,
+.nav section > div::before {
+  --height: 5px;
+  content: "";
+  border: 3px solid;
+  position: absolute;
+  height: var(--height);
+  aspect-ratio: 1;
+  opacity: 0;
+}
+.nav section > div::after {
+  bottom: 0;
+  right: 0;
+  border-color: transparent rgb(var(--orange)) rgb(var(--orange)) transparent;
+}
+.nav section > div::before {
+  top: 0;
+  left: 0;
+  border-color: rgb(var(--orange)) transparent transparent rgb(var(--orange));
+}
+
+.bar {
+  border: 1px solid rgb(var(--white));
+  padding: 5px;
+  padding-bottom: 3px;
+  font-size: 1.6rem;
+  cursor: pointer;
+  position: relative;
+}
+.bar input {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  appearance: none;
+}
+.nav img {
+  /* object-fit: cover; */
+  /* width: 200px;
+  aspect-ratio: 23/14 !important; */
+  width: 100px;
+  height: 50px;
+  filter: invert(1) brightness(100);
+  margin-bottom: 5px;
+}
+
+.booking {
+  padding: 12px 16px;
+  background: rgb(var(--orange));
+  cursor: pointer;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #242222;
+  /* opacity: 0.6; */
+}
+
+@media screen and (min-width: 900px) {
+  .nav {
+    padding-block: 0;
+  }
+  .bar {
+    display: none;
+  }
+  .nav nav section {
+    display: flex;
+  }
+  .mobile__nav {
+    display: none;
+  }
+  .nav img {
+    width: auto;
+    height: auto;
+  }
+}

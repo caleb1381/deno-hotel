@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  overflow-x: hidden;
+}
+
+/* * {
+  outline: 1px solid red;
+} */
+
+@layer base {
+  :root {
+    --lime: #ffce14;
+    --purple: #0f2453;
+    --off-white: #f9f9f7;
+    --light-purple: rgba(46, 72, 128, 0.6);
+    --alice-blue: rgb(240, 248, 255, 1);
+    --foreground: rgb(228, 236, 243);
+  }
+}
+
+@layer utilities {
+  .pri_btn {
+    @apply inline-block px-5 py-2 border-2 rounded-md border-white font-semibold relative overflow-hidden;
+  }
+  .pri_btn:hover {
+    @apply border-lime text-[#434343];
+  }
+  .pri_btn:hover::after {
+    @apply -right-2;
+  }
+
+  .pri_btn::after {
+    content: "";
+    @apply absolute -inset-8 bg-lime  rounded-md right-full transition-all -skew-x-12 -z-10;
+  }
+  .contain {
+    @apply max-w-[1440px] mx-auto px-5;
+  }
+
+  .intro {
+    @apply md:block relative z-50 hidden;
+  }
+
+  .intro .contain {
+    @apply text-off-white flex justify-between px-5 p-3  text-base font-dm_sans font-light;
+  }
+
+  .intro div {
+    @apply items-center;
+  }
+
+  .intro .socials {
+    @apply flex gap-5;
+  }
+  .intro .socials img {
+    @apply size-4;
+  }
+
+  .hero {
+    @apply h-[45vmax] max-h-[650px] lg:max-h-[750px] isolate relative min-h-[500px];
+    border-image: fill 0 linear-gradient(to right, #0000004d, #0000004d);
+  }
+
+  .hero::after {
+    border-image: fill 0 linear-gradient(to right, #000000bd, #000000c9);
+    @apply absolute inset-0 z-[10];
+    /* border-image: fill 0
+      linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%); */
+    content: "";
+  }
+
+  .hero_form {
+    @apply w-[80%] max-w-[1000px]  bg-white shadow-lg absolute bottom-0 translate-y-1/2 left-1/2 -translate-x-1/2 rounded-lg hidden md:flex gap-2 !h-1/3 max-h-[160px] overflow-hidden;
+  }
+
+  .hero .hero-top {
+    @apply absolute w-full top-0 left-0 z-[2000];
+  }
+
+  .hero_form__container {
+    @apply grid grid-cols-4  !w-full;
+  }
+  .hero_form__container_item {
+    @apply flex flex-col justify-center items-center h-full border-2 border-black;
+  }
+  .hero_form__container_item:not(:last-child) {
+    @apply border border-gray-800;
+  }
+
+  .hero div:not(.hero-top) {
+    height: 100%;
+  }
+
+  .hero_content {
+    @apply h-full absolute w-full z-[400] bottom-0 grid place-items-center text-center;
+  }
+  .hero_content > section {
+    @apply flex flex-col gap-10;
+  }
+
+  .hero_content h1 {
+    @apply text-4xl md:text-7xl text-lime font-bold;
+  }
+  .hero_content .subtext {
+    @apply text-xl md:text-3xl text-off-white;
+  }
+  .hero_content .subtitle {
+    @apply text-lg md:text-2xl text-lime;
+  }
+
+  .header {
+    @apply flex justify-between items-center text-off-white relative z-50 mt-1;
+  }
+
+  .header .logo img {
+    @apply invert-[0] brightness-[100];
+  }
+
+  .header nav {
+    @apply lg:flex items-center gap-8 hidden;
+  }
+  .header .links {
+    @apply flex items-center gap-5;
+  }
+  .header .links div {
+    @apply border-b-2 border-transparent;
+  }
+  .header .links div:hover {
+    @apply border-off-white;
+  }
+
+  .mobile_nav {
+    @apply block lg:hidden cursor-pointer;
+  }
+
+  .mobile_links {
+    @apply flex flex-col gap-5 items-start;
+  }
+  .nav_item {
+    @apply p-4 bg-foreground w-full text-left rounded-md font-semibold text-[#434343] flex items-center gap-3;
+  }
+}
+
+.alice-carousel__prev-btn-item,
+.alice-carousel__next-btn-item {
+  @apply !absolute top-1/2 -translate-y-1/2 z-[500] !h-auto   !w-8 md:!w-20 border-t;
+
+  & * {
+    @apply !opacity-0;
+  }
+
+  &::after {
+    content: "";
+    @apply w-1/2 absolute border-t-2 border-white top-0 -translate-y-2/3;
+  }
+}
+
+.alice-carousel__prev-btn-item {
+  @apply !left-0;
+}
+
+.alice-carousel__prev-btn-item::before {
+  content: "prev";
+  @apply absolute right-0 text-xs text-gray-300;
+}
+.alice-carousel__prev-btn-item::after {
+  @apply !right-0;
+}
+.alice-carousel__next-btn-item::after {
+  @apply !left-0;
+}
+.alice-carousel__next-btn-item::before {
+  content: "next";
+  @apply absolute left-0 text-xs text-gray-300;
+}
+
+.alice-carousel__next-btn-item {
+  @apply !right-0;
+}
+
+.alice-carousel__stage-item {
+  @apply md:!mr-10;
+}
+
+/* .alice-carousel__prev-btn; */
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}

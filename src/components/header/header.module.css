@@ -1,0 +1,90 @@
+.header {
+  padding-block-start: 20px;
+  padding-block-end: 0;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header .icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.header .icons > * {
+  color: rgb(var(--dark-blue), 0.7);
+  font-size: 1.5rem;
+}
+
+.header .info {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: 70%;
+  margin-inline: auto;
+}
+.header .info div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.header .info div :first-child {
+  color: rgba(var(--black));
+}
+.header > section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header > section > div:last-child {
+  background: rgba(var(--orange));
+  color: rgba(var(--white));
+  font-size: 1.5rem;
+  display: grid;
+  place-items: center;
+  padding-block: 10px;
+}
+
+@media screen and (min-width: 415px) {
+  .header > section > div:last-child {
+    width: 20%;
+  }
+}
+
+@media screen and (min-width: 485px) {
+  .header {
+    align-items: start;
+    padding: 20px;
+  }
+
+  .header > section {
+    flex-direction: row;
+    justify-content: end;
+    gap: 0;
+    width: 100%;
+  }
+  .header > section > div:last-child {
+    width: 20%;
+  }
+}
+
+@media screen and (min-width: 570px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header .info {
+    max-width: none;
+  }
+
+  .header > section {
+    min-width: none;
+  }
+  .header > section > div:last-child {
+    width: 100px;
+  }
+}

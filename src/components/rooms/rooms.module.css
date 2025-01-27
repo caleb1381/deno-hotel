@@ -1,0 +1,117 @@
+.rooms {
+  padding-block: 100px;
+  background-color: rgb(var(--pink));
+  padding-inline: 5%;
+}
+.title {
+  text-align: center;
+  font-size: 4rem;
+  margin-bottom: 50px;
+  color: rgb(var(--dark-blue));
+}
+
+.rooms main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-inline: auto;
+}
+.card {
+  max-width: 400px;
+  flex: 1 1 300px;
+  background: rgb(var(--white));
+  color: #333;
+  box-shadow: 0 0 4px rgb(var(--black), 0.3);
+  padding-bottom: 20px;
+}
+.card__image {
+  position: relative;
+  height: fit-content;
+}
+.card__image > div:first-child {
+  position: relative;
+  overflow: hidden;
+}
+.card__image img {
+  transition: scale 300ms;
+  object-fit: cover;
+  width: 100%;
+}
+.card img:hover {
+  scale: 1.04;
+}
+.tag {
+  position: absolute;
+  padding: 10px;
+  background: rgb(var(--dark-blue));
+  color: rgb(var(--white));
+  right: 0;
+  bottom: 0;
+  transform: translateY(50%);
+  font-size: 1.4rem;
+}
+
+.ratings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-top: 30px;
+}
+
+.desc {
+  padding: 10px 30px 30px;
+  text-align: center;
+  line-height: 1.5;
+  height: 104px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+  overflow: hidden;
+  text-overflow: clip;
+  color: #333;
+}
+
+.price {
+  position: absolute;
+  padding: 10px 20px;
+  background: rgb(var(--orange));
+  color: rgb(var(--dark-blue));
+  left: 0;
+  top: 0;
+  font-size: 1.4rem;
+}
+
+.link a {
+  display: block;
+  background-color: rgb(var(--orange));
+  padding: 15px 40px;
+  width: fit-content;
+  border-radius: 8px;
+  margin-inline: auto;
+  margin-top: 30px;
+  font-size: 1.2rem;
+}
+
+.link a:hover {
+  background-color: rgb(var(--dark-blue));
+  color: white;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  color: rgb(var(--orange));
+  padding-inline: 40px;
+}
+.details div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2rem;
+}
+.details div span:first-child {
+  padding-top: 7px;
+}

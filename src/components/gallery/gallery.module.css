@@ -1,0 +1,29 @@
+.gallery {
+  padding: 50px 0;
+}
+
+.title {
+  text-align: center;
+  font-size: 4rem;
+  margin-top: 50px;
+}
+
+.gallery img {
+  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+  margin-left: 0 !important;
+}
+
+.link {
+  display: block;
+  width: fit-content;
+  margin-inline: auto;
+  background: rgb(var(--orange));
+  padding: 24px 32px;
+  border-radius: 50px;
+  font-size: 1.3rem;
+}
+.link:hover {
+  background: rgb(var(--orange), 0.7);
+}

@@ -1,0 +1,22 @@
+.container {
+  padding: 50px 15%;
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 60px;
+  /* background: rgb(var(--pink)); */
+}
+
+.container > div:first-child {
+  font-size: 3rem;
+}
+
+@media screen and (max-width: 1000px) {
+  .container {
+    grid-template-columns: 1fr;
+    padding: 50px 5%;
+  }
+  .container > div:first-child {
+    text-align: center;
+    font-size: 2rem;
+  }
+}

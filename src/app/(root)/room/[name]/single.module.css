@@ -1,0 +1,156 @@
+.room {
+  color: rgb(var(--black));
+}
+
+.breadcrumb {
+  height: 50vmin;
+  min-height: 350px;
+  position: relative;
+}
+
+.breadcrumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+  position: absolute;
+}
+.breadcrumb .text {
+  padding-inline: 10%;
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  height: 100%;
+  color: rgb(var(--white));
+}
+.breadcrumb h3 {
+  font-size: 1.6rem;
+  transform: translateY(-60px);
+  text-decoration: underline;
+}
+.breadcrumb h1 {
+  transform: translateY(-60px);
+  font-size: clamp(2.7rem, 5vw, 4rem);
+  font-weight: 900;
+}
+
+.buttons {
+  position: absolute;
+  z-index: 4;
+  background: #eee;
+  height: 23%;
+  width: calc(90%);
+  bottom: 0;
+  display: flex;
+  color: #333;
+  border-top-right-radius: 30px;
+  overflow: hidden;
+}
+
+.buttons > div:first-child {
+  flex: 1 1 0;
+}
+.buttons > a:last-child {
+  display: block;
+  background: rgb(var(--orange));
+  display: grid;
+  place-items: center;
+  padding-inline: 7%;
+  font-size: clamp(1rem, 5vw, 1.4rem);
+  color: #000;
+  font-weight: 500;
+}
+.prop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20%;
+  font-size: 1.5rem;
+}
+
+.overlay {
+  --white: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, var(--white), transparent);
+  z-index: 2;
+}
+
+.room main {
+  padding: 100px 10%;
+  font-size: 1.123rem;
+  line-height: 32px;
+  display: flex;
+  gap: 100px;
+  flex-wrap: wrap;
+}
+.room main > div:first-child {
+  flex: 3 1 0;
+}
+.room main > div:last-child {
+  flex: 2 1 250px;
+}
+.room section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+.room section h3 {
+  font-size: 1.21rem;
+}
+.room main h1 {
+  font-size: 2rem !important;
+  color: rgb(var(--dark-blue)) !important;
+  margin-top: 30px;
+}
+
+.room ul {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 15px;
+  list-style-position: inside;
+  /* max-width: 1000px; */
+  text-align: justify;
+}
+.gallery {
+  margin-top: 50px;
+}
+
+.room div:has(> .details) {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.details {
+  display: flex;
+  gap: 10%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  font-weight: 800;
+  color: rgb(var(--dark-blue), 0.7);
+}
+.room aside {
+  /* display: grid; */
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.detail p:first-child {
+  font-size: 2.3rem;
+}
+@media screen and (max-width: 1200px) {
+  .room section {
+    grid-template-columns: 1fr !important;
+  }
+}
