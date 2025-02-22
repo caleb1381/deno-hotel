@@ -59,18 +59,16 @@ const Services = () => {
         <div className={federo.className}>
         <p className={styles.title}>We offer event halls for different occasions</p>
         </div>
-        <div className={styles.halls}>
           <div className={federo.className}>
             <p className={styles.hall}>Small Hall</p>
             <p className={styles.hall}>Capacity: 60 - 70 people</p>
           </div>
-          <div className={styles.hall}>
-            <p className={styles.hallTitle}>Large Hall</p>
-            <p>Capacity: 150 - 250 people</p>
+          <div className={federo.className}>
+            <p className={styles.hall}>Large Hall</p>
+            <p className={styles.hall}>Capacity: 150 - 250 people</p>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
