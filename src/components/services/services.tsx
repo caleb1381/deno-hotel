@@ -20,31 +20,53 @@ const Services = () => {
       <div className={oswald.className}>
         <p className={styles.center}>Our Services</p>
       </div>
+
       <div className={styles.cards}>
         <div className={styles.card}>
           <div>
             <IonIcon icon={carSportOutline}></IonIcon>
           </div>
           <div className={federo.className}>
-            <p className={styles.title}>Airport pickup and drop</p>
+            <p className={styles.title}>Airport Pickup and Drop</p>
           </div>
-          <p>patronize with us for this great offers and services</p>
+          <p>Patronize us for these great offers and services.</p>
           <div>
-            <li>24-hour pick up and drop service</li>
-            {/* <li>24-hour Concierge service</li> */}
+            <li>24-hour pick-up and drop service</li>
           </div>
         </div>
+
         <div className={styles.card}>
           <div>
             <IonIcon icon={fastFoodSharp}></IonIcon>
           </div>
           <div className={federo.className}>
-            <p className={styles.title}>24 Hour Restaurant</p>
+            <p className={styles.title}>24-Hour Restaurant</p>
           </div>
-          <p>we are always available 24/7 everyday for your services.</p>
+          <p>We are always available 24/7 every day for your services.</p>
           <div>
-            <li>24 hours room service</li>
+            <li>24-hour room service</li>
             <li>24-hour Concierge service</li>
+          </div>
+        </div>
+      </div>
+
+      {/* Event Halls Section */}
+      <div className={styles.eventHalls}>
+        <div className={oswald.className}>
+          <p className={styles.center}>Event Halls</p>
+        </div>
+        
+        <div className={federo.className}>
+        <p className={styles.title}>We offer event halls for different occasions</p>
+        </div>
+        <div className={styles.halls}>
+          <div className={federo.className}>
+            <p className={styles.hall}>Small Hall</p>
+            <p className={styles.hall}>Capacity: 60 - 70 people</p>
+          </div>
+          <div className={styles.hall}>
+            <p className={styles.hallTitle}>Large Hall</p>
+            <p>Capacity: 150 - 250 people</p>
           </div>
         </div>
       </div>

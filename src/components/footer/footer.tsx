@@ -82,7 +82,7 @@ const Footer = () => {
           </p>
           <p>
             <Link href="https://ifeoluwa-odediran.netlify.app/#contact">
-              Design & Developed By Ife and Caleb Tech 08135168529
+              Design & Developed By Ife and Caleb Tech 08135168529, 08103158886
             </Link>
           </p>
         </div>
