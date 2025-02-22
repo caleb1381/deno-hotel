@@ -31,7 +31,7 @@ const Footer = () => {
               <p>Deno Hotels & Apartment</p>
             </div>
             <div className={styles.socials}>
-              <Link href={"https://www.facebook.com/denohotelapartments"}>
+              <Link href={"https://www.facebook.com/share/1CuXjxVtCZ/"}>
                 <IonIcon icon={logoFacebook}></IonIcon>
               </Link>
               <Link href={"https://twitter.com/DenoHotels77851"}>
@@ -39,7 +39,7 @@ const Footer = () => {
               </Link>
               <Link
                 href={
-                  "https://instagram.com/denohotels?igshid=NTc4MTIwNjQ2YQ=="
+                  "https://www.instagram.com/deno_hotels?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                 }
               >
                 <IonIcon icon={logoInstagram}></IonIcon>
@@ -82,7 +82,7 @@ const Footer = () => {
           </p>
           <p>
             <Link href="https://ifeoluwa-odediran.netlify.app/#contact">
-              Design & Developed By Ife and Caleb Tech 08135168529, 08103158886
+              Design & Developed By Ife and Caleb Tech <a href="tel:08135168529">08135168529</a>, <a href="tel:08103158886">08103158886</a>
             </Link>
           </p>
         </div>

@@ -31,7 +31,7 @@ export const FormSchema = z.object({
     required_error: "A check out date is required.",
   }),
   // guest: z.number().min(1),
-  guest: z.string(),
+  numberOfGuests: z.string(),
 });
 
 const HeroForm = () => {
@@ -59,12 +59,12 @@ const HeroForm = () => {
 
             <FormField
               control={form.control}
-              name="guest"
+              name="numberOfGuests"
               render={({ field }) => (
                 <FormItem>
                   <div className="flex flex-col justify-center text-left p-4 md:p-8 gap-2">
                     <FormLabel className="text-lg md:text-xl lg:text3xl text-gray-600">
-                      Guests
+                      Number of Guests
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}

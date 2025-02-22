@@ -29,7 +29,7 @@ const Intro = () => {
         </div>
         <div className=" socials">
           <Link
-            href="https://www.facebook.com/reel/674203408170667/?mibextid=cr9u03"
+            href="https://www.facebook.com/share/1CuXjxVtCZ/"
             target="_blank"
           >
             <Image
@@ -48,7 +48,7 @@ const Intro = () => {
             />
           </Link>
           <Link
-            href="https://instagram.com/denohotels?igshid=NTc4MTIwNjQ2YQ=="
+            href="https://www.instagram.com/deno_hotels?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
             target="_blank"
           >
             <Image
