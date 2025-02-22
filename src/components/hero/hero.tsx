@@ -48,9 +48,9 @@ const Hero = () => {
           <section>
             <TypeAnimation
               sequence={[
-                "Indulge in Hospitality.",
+                "Indulge luxury hotel experience in Bauchi.",
                 2000,
-                "Discover Serenity and Luxury.",
+                "Discover top hotel experience in Bauchi.",
                 2000,
               ]}
               wrapper="span"
@@ -63,7 +63,7 @@ const Hero = () => {
               repeat={Infinity}
             />
 
-            <p className="subtext">A World of Comfort Awaits</p>
+            <p className="subtext">Enjoy comfort of the best hotel in Bauchi</p>
             <p className="subtitle">GET ACCOMMODATION TODAY</p>
 
             <HeroForm />
