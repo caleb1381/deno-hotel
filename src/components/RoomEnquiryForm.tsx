@@ -1,4 +1,3 @@
-
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -11,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import {
   Drawer,
@@ -44,6 +44,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { X } from "lucide-react";
 
 export function EnquiryForm() {
   const [open, setOpen] = React.useState(false);
@@ -57,7 +58,7 @@ export function EnquiryForm() {
             Reserve Now
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[90%] border-none bg-lime">
+        <DialogContent className="sm:max-w-[90%] border-none bg-lime [&>button]:hidden">
           <FormContainer />
         </DialogContent>
       </Dialog>
@@ -82,11 +83,11 @@ export const FormSchema = z.object({
   name: z.string().min(2, {
     message: "Name is required and should be more than 3 characters",
   }),
-  email: z.string().email({ message: "Pls enter Email ID" }),
-  phoneNumber: z
-    .string()
-    .length(11, { message: "Pls enter a valid phone number" }),
-  roomType: z.string().default("Test"), // get default from room page
+  email: z.string().email({ message: "Please enter a valid Email ID" }),
+  phoneNumber: z.string().length(11, { message: "Please enter a valid phone number" }),
+  address: z.string().optional(),
+  accountNumber: z.string().min(8, { message: "Please enter a valid account number" }),
+  roomType: z.string().min(1, { message: "Please select a room type" }),
   arrival: z.date({
     required_error: "A check in date is required.",
   }),
@@ -95,283 +96,224 @@ export const FormSchema = z.object({
   }),
   adult: z.number().min(1),
   children: z.number(),
-  message: z.string({ message: "Enter a message" }).min(10, {
-    message: "Pls enter a message that is more than 10 charaters long",
+  specialRequests: z.string().optional(),
+  acceptTerms: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions",
   }),
 });
 
 function onSubmit(values: z.infer<typeof FormSchema>) {
-  // Do something with the form values.
-  // ✅ This will be type-safe and validated.
-  console.log(values);
+  const emailBody = `
+Name: ${values.name}
+Email: ${values.email}
+Phone: ${values.phoneNumber}
+Address: ${values.address || 'Not provided'}
+Account Number: ${values.accountNumber}
+Room Type: ${values.roomType}
+Special Requests: ${values.specialRequests || 'None'}
+  `.trim();
+
+  const mailtoLink = `mailto:denohotels@gmail.com?subject=New Room Enquiry&body=${encodeURIComponent(emailBody)}`;
+  window.location.href = mailtoLink;
 }
 
 const FormContainer = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+
   return (
     <Form {...form}>
-      <div className="text-center text-3xl lg:text-5xl mt-5 font-playfair text-gray-900 mb-5 lg:mb-10">
-        Rooms Forms
-      </div>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {/* row 1 */}
-        <div className="flex gap-4 md:gap-8">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input
-                    placeholder="Name"
-                    {...field}
-                    className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none text-lg md:text-xl focus:borde focus:border-b-2 "
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input
-                    placeholder="Email"
-                    {...field}
-                    className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none text-lg md:text-xl focus:borde focus:border-b-2 "
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      <div className="relative">
+        {/* Close button */}
+        <DialogClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground md:block hidden">
+          <X className="h-6 w-6" />
+          <span className="sr-only">Close</span>
+        </DialogClose>
+        <DrawerClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground md:hidden block">
+          <X className="h-6 w-6" />
+          <span className="sr-only">Close</span>
+        </DrawerClose>
+        
+        <div className="text-center text-3xl lg:text-5xl mt-5 font-playfair text-gray-900 mb-5 lg:mb-10">
+          Room Enquiry Form
         </div>
-
-        {/* row 2 */}
-        <div className="flex gap-4">
-          <FormField
-            control={form.control}
-            name="phoneNumber"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input
-                    placeholder="Phone No."
-                    {...field}
-                    className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none text-lg md:text-xl focus:borde focus:border-b-2 "
-                    type="number"
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* row 3 */}
-        <div className="flex gap-4 md:gap-8">
-          <div className="flex-1">
-            <FormField
-              control={form.control}
-              name="roomType"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="text-lg md:text-xl text-slate-900">
-                    Room Type
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {/* Guest Information Section */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold">Guest Information</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
                     <FormControl>
-                      <SelectTrigger className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none text-lg md:text-xl focus:borde focus:border-b-2 ">
-                        <SelectValue />
-                      </SelectTrigger>
+                      <Input
+                        placeholder="Name"
+                        {...field}
+                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none"
+                      />
                     </FormControl>
-                    <SelectContent className="bg-white text-gray-950">
-                      <SelectItem value="m@example.com">
-                        m@example.com
-                      </SelectItem>
-                      <SelectItem value="m@google.com">m@google.com</SelectItem>
-                      <SelectItem value="m@support.com">
-                        m@support.com
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Email"
+                        {...field}
+                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Phone No."
+                        {...field}
+                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none"
+                        type="number"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Address (Optional)"
+                        {...field}
+                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
 
-          <div className="flex gap-4  flex-1">
-            <FormField
-              control={form.control}
-              name="roomType"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="text-lg md:text-xl text-slate-900">
-                    Adult
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+          {/* Payment & Stay Details in Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+            {/* Payment Section */}
+            <div className="space-y-4">
+              <h2 className="text-lg font-semibold">Payment & Billing</h2>
+              <FormField
+                control={form.control}
+                name="accountNumber"
+                render={({ field }) => (
+                  <FormItem>
                     <FormControl>
-                      <SelectTrigger className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none text-lg md:text-xl focus:borde focus:border-b-2 ">
-                        <SelectValue />
-                      </SelectTrigger>
+                      <Input
+                        placeholder="Account Number"
+                        {...field}
+                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none"
+                      />
                     </FormControl>
-                    <SelectContent className="bg-white text-gray-950">
-                      <SelectItem value="m@example.com">
-                        m@example.com
-                      </SelectItem>
-                      <SelectItem value="m@google.com">m@google.com</SelectItem>
-                      <SelectItem value="m@support.com">
-                        m@support.com
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <p className="text-xs text-gray-600">Please send proof of payment</p>
+            </div>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="roomType"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="text-lg md:text-xl text-slate-900">
-                    Children
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none text-lg md:text-xl focus:borde focus:border-b-2 ">
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="bg-white text-gray-950">
-                      <SelectItem value="m@example.com">
-                        m@example.com
-                      </SelectItem>
-                      <SelectItem value="m@google.com">m@google.com</SelectItem>
-                      <SelectItem value="m@support.com">
-                        m@support.com
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Stay Details Section */}
+            <div className="space-y-4">
+              <h2 className="text-lg font-semibold">Stay Details</h2>
+              <FormField
+                control={form.control}
+                name="roomType"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none">
+                          <SelectValue placeholder="Select room type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="bg-white text-gray-950">
+                        <SelectItem value="deluxe">Deluxe Room</SelectItem>
+                        <SelectItem value="suite">Suite</SelectItem>
+                        <SelectItem value="standard">Standard Room</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
-        </div>
 
-        {/* row 4 */}
-        <div className="flex gap-4 md:gap-8">
+          {/* Special Requests */}
           <FormField
             control={form.control}
-            name="roomType"
+            name="specialRequests"
             render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-lg md:text-xl text-slate-900">
-                  Arrival
-                </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none text-lg md:text-xl focus:borde focus:border-b-2 ">
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="bg-white text-gray-950">
-                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                    <SelectItem value="m@support.com">m@support.com</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="roomType"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="text-lg md:text-xl text-slate-900">
-                  Departure
-                </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none text-lg md:text-xl focus:borde focus:border-b-2 ">
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="bg-white text-gray-950">
-                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                    <SelectItem value="m@support.com">m@support.com</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* row 5 */}
-        <div>
-          <FormField
-            control={form.control}
-            name="message"
-            render={({ field }) => (
-              <FormItem className="w-full">
+              <FormItem>
                 <FormControl>
                   <Textarea
-                    placeholder="Message"
+                    placeholder="Special Requests (Optional)"
                     {...field}
-                    className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none text-lg md:text-xl focus:borde focus:border-b-2 "
+                    className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none resize-none h-20"
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
           />
-        </div>
 
-        <div className="p-3 hidden lg:block" />
+          {/* Terms & Conditions */}
+          <FormField
+            control={form.control}
+            name="acceptTerms"
+            render={({ field }) => (
+              <FormItem className="flex items-start space-x-2">
+                <FormControl>
+                  <input
+                    type="checkbox"
+                    {...{...field, value: undefined}}
+                    className="mt-1 h-4 w-4 rounded border-gray-300"
+                  />
+                </FormControl>
+                <FormLabel className="text-sm">
+                  I accept the <a href="#" className="text-blue-600">Terms & Conditions</a> and <a href="#" className="text-blue-600">Privacy Policy</a>
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Button
-          type="submit"
-          className="mt-20 bg-gray-900 text-white text-lg lg:text-xl px-8 h-11 lg:px-12 lg:h-16"
-        >
-          Submit
-        </Button>
-      </form>
+          <Button
+            type="submit"
+            className="w-full md:w-auto bg-gray-900 text-white px-8 h-11"
+          >
+            Complete Registration
+          </Button>
+        </form>
+      </div>
     </Form>
   );
 };
+
+export default EnquiryForm;
