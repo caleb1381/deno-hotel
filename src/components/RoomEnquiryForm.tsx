@@ -288,8 +288,10 @@ Special Requests: ${values.specialRequests || 'None'}
                       </FormControl>
                       <SelectContent className="bg-white text-gray-950">
                         <SelectItem value="deluxe">Deluxe Room</SelectItem>
-                        <SelectItem value="suite">Suite</SelectItem>
-                        <SelectItem value="standard">Standard Room</SelectItem>
+                        <SelectItem value="studio">Studio Room</SelectItem>
+                        <SelectItem value="Executive">Executive Room</SelectItem>
+                        <SelectItem value="presidential">Presidentiial Room</SelectItem>
+                        <SelectItem value="Ambassadorial">Ambassadorial Room</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
