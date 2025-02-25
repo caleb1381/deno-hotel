@@ -102,29 +102,49 @@ export const FormSchema = z.object({
   }),
 });
 
-function onSubmit(values: z.infer<typeof FormSchema>) {
-  const emailBody = `
+const FormContainer = () => {
+  const [showSuccess, setShowSuccess] = React.useState(false);
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      adult: 1,
+      children: 0,
+    }
+  });
+
+  const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
+    const emailBody = `
 Name: ${values.name}
 Email: ${values.email}
 Phone: ${values.phoneNumber}
 Address: ${values.address || 'Not provided'}
 Account Number: ${values.accountNumber}
 Room Type: ${values.roomType}
+Arrival: ${values.arrival.toLocaleDateString()}
+Departure: ${values.departure.toLocaleDateString()}
+Adults: ${values.adult}
+Children: ${values.children}
 Special Requests: ${values.specialRequests || 'None'}
-  `.trim();
+    `.trim();
 
-  const mailtoLink = `mailto:denohotels@gmail.com?subject=New Room Enquiry&body=${encodeURIComponent(emailBody)}`;
-  window.location.href = mailtoLink;
-}
-
-const FormContainer = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  });
+    try {
+      window.location.href = `mailto:denohotels@gmail.com?subject=New Room Enquiry&body=${encodeURIComponent(emailBody)}`;
+      setShowSuccess(true);
+      form.reset();
+      setTimeout(() => setShowSuccess(false), 3000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
 
   return (
     <Form {...form}>
-      <div className="relative">
+      <div className="relative max-w-4xl mx-auto">
+        {showSuccess && (
+          <div className="absolute top-0 left-0 right-0 bg-green-500 text-white p-3 text-center rounded-md">
+            Form submitted successfully! Check your email client.
+          </div>
+        )}
         {/* Close button */}
         <DialogClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground md:block hidden">
           <X className="h-6 w-6" />
@@ -135,14 +155,14 @@ const FormContainer = () => {
           <span className="sr-only">Close</span>
         </DrawerClose>
         
-        <div className="text-center text-3xl lg:text-5xl mt-5 font-playfair text-gray-900 mb-5 lg:mb-10">
+        <div className="text-center text-2xl lg:text-4xl mt-5 font-playfair text-gray-900 mb-5">
           Room Enquiry Form
         </div>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           {/* Guest Information Section */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Guest Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-3">
+            <h2 className="text-lg font-semibold border-b pb-1">Guest Information</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <FormField
                 control={form.control}
                 name="name"
@@ -212,10 +232,10 @@ const FormContainer = () => {
           </div>
 
           {/* Payment & Stay Details in Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Payment Section */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold">Payment & Billing</h2>
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold border-b pb-1">Payment & Billing</h2>
               <FormField
                 control={form.control}
                 name="accountNumber"
@@ -236,8 +256,8 @@ const FormContainer = () => {
             </div>
 
             {/* Stay Details Section */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold">Stay Details</h2>
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold border-b pb-1">Stay Details</h2>
               <FormField
                 control={form.control}
                 name="roomType"
@@ -265,23 +285,111 @@ const FormContainer = () => {
             </div>
           </div>
 
+          {/* Dates and Guests Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <FormField
+                control={form.control}
+                name="arrival"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm">Arrival Date</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="date"
+                        {...field}
+                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 rounded-none"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="departure"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm">Departure Date</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="date"
+                        {...field}
+                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 rounded-none"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <FormField
+                  control={form.control}
+                  name="adult"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Adults</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min="1"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value))}
+                          className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 rounded-none"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="children"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Children</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min="0"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value))}
+                          className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 rounded-none"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Special Requests */}
-          <FormField
-            control={form.control}
-            name="specialRequests"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Special Requests (Optional)"
-                    {...field}
-                    className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none resize-none h-20"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="space-y-2">
+            <FormField
+              control={form.control}
+              name="specialRequests"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Special Requests (Optional)"
+                      {...field}
+                      className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none resize-none h-16"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           {/* Terms & Conditions */}
           <FormField
@@ -306,7 +414,7 @@ const FormContainer = () => {
 
           <Button
             type="submit"
-            className="w-full md:w-auto bg-gray-900 text-white px-8 h-11"
+            className="w-full md:w-auto bg-gray-900 text-white px-8 h-10"
           >
             Complete Registration
           </Button>
