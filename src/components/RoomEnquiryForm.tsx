@@ -58,8 +58,19 @@ export function EnquiryForm() {
             Reserve Now
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[90%] border-none bg-lime [&>button]:hidden">
-          <FormContainer />
+        <DialogContent className="sm:max-w-[95%] md:max-w-[85%] lg:max-w-[80%] border-none bg-lime p-0">
+          <div className="sticky top-0 z-10 bg-lime p-8 pb-4">
+            <DialogClose className="absolute right-6 top-6 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+              <X className="h-6 w-6" />
+              <span className="sr-only">Close</span>
+            </DialogClose>
+            <h2 className="text-center text-3xl lg:text-5xl font-playfair text-gray-900">
+              Room Enquiry Form
+            </h2>
+          </div>
+          <div className="px-8 pb-8 overflow-y-auto max-h-[75vh]">
+            <FormContainer />
+          </div>
         </DialogContent>
       </Dialog>
     );
@@ -72,8 +83,24 @@ export function EnquiryForm() {
           Reserve Now
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="border-none bg-lime px-10 pb-10">
-        <FormContainer />
+      <DrawerContent 
+        className="border-none bg-lime"
+        onPointerDown={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+      >
+        <div className="sticky top-0 z-10 bg-lime">
+          <DrawerClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+            <X className="h-6 w-6" />
+            <span className="sr-only">Close</span>
+          </DrawerClose>
+          <h2 className="text-center text-2xl lg:text-4xl font-playfair text-gray-900 pt-4">
+            Room Enquiry Form
+          </h2>
+        </div>
+        <div className="h-[75vh] overflow-y-scroll px-6 touch-pan-y">
+          <FormContainer />
+          <div className="h-10"></div>
+        </div>
       </DrawerContent>
     </Drawer>
   );
@@ -139,25 +166,12 @@ Special Requests: ${values.specialRequests || 'None'}
 
   return (
     <Form {...form}>
-      <div className="relative max-w-4xl mx-auto">
+      <div className="relative max-w-5xl mx-auto">
         {showSuccess && (
-          <div className="absolute top-0 left-0 right-0 bg-green-500 text-white p-3 text-center rounded-md">
+          <div className="fixed top-0 left-0 right-0 bg-green-500 text-white p-3 text-center rounded-md z-50">
             Form submitted successfully! Check your email client.
           </div>
         )}
-        {/* Close button */}
-        <DialogClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground md:block hidden">
-          <X className="h-6 w-6" />
-          <span className="sr-only">Close</span>
-        </DialogClose>
-        <DrawerClose className="absolute right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground md:hidden block">
-          <X className="h-6 w-6" />
-          <span className="sr-only">Close</span>
-        </DrawerClose>
-        
-        <div className="text-center text-2xl lg:text-4xl mt-5 font-playfair text-gray-900 mb-5">
-          Room Enquiry Form
-        </div>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           {/* Guest Information Section */}
           <div className="space-y-3">
@@ -423,5 +437,3 @@ Special Requests: ${values.specialRequests || 'None'}
     </Form>
   );
 };
-
-export default EnquiryForm;
