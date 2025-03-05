@@ -113,6 +113,7 @@ export const FormSchema = z.object({
   }),
   email: z.string().email({ message: "Please enter a valid Email ID" }),
   phoneNumber: z.string().length(11, { message: "Please enter a valid phone number" }),
+  address: z.string().optional(),
   roomType: z.string().min(1, { message: "Please select a room type" }),
   arrival: z.date({
     required_error: "A check in date is required.",
@@ -210,6 +211,22 @@ const FormContainer = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Address (Optional)"
+                        {...field}
+                        className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8 [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm [&:not(:placeholder-shown)]:text-xs [&:not(:placeholder-shown)]:md:text-sm"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-[10px]" />
+                  </FormItem>
+                )}
+              />
             </div>
           </div>
 
@@ -222,16 +239,16 @@ const FormContainer = () => {
                 <FormItem>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8 [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm [&:not(:placeholder-shown)]:text-xs [&:not(:placeholder-shown)]:md:text-sm">
+                      <SelectTrigger className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-7">
                         <SelectValue placeholder="Select room type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="bg-white text-gray-950 text-xs">
-                      <SelectItem value="deluxe">Deluxe Room</SelectItem>
-                      <SelectItem value="studio">Studio Room</SelectItem>
-                      <SelectItem value="executive">Executive Room</SelectItem>
-                      <SelectItem value="presidential">Presidential Room</SelectItem>
-                      <SelectItem value="ambassadorial">Ambassadorial Room</SelectItem>
+                      <SelectItem value="deluxe" className="text-xs py-1">Deluxe Room</SelectItem>
+                      <SelectItem value="studio" className="text-xs py-1">Studio Room</SelectItem>
+                      <SelectItem value="executive" className="text-xs py-1">Executive Room</SelectItem>
+                      <SelectItem value="presidential" className="text-xs py-1">Presidential Room</SelectItem>
+                      <SelectItem value="ambassadorial" className="text-xs py-1">Ambassadorial Room</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage className="text-[10px]" />
@@ -253,7 +270,13 @@ const FormContainer = () => {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none w-full [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:block text-xs md:text-sm h-7 [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm"
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none w-full text-xs md:text-sm h-7 
+                        [&::-webkit-calendar-picker-indicator]:opacity-100 
+                        [&::-webkit-calendar-picker-indicator]:block 
+                        [&::-webkit-calendar-picker-indicator]:w-4 
+                        [&::-webkit-calendar-picker-indicator]:h-4
+                        [&::-webkit-input-placeholder]:text-xs 
+                        [&::-webkit-input-placeholder]:md:text-sm"
                       style={{ colorScheme: 'light' }}
                       min={new Date().toISOString().split('T')[0]}
                     />
@@ -273,7 +296,13 @@ const FormContainer = () => {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none w-full [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:block text-sm h-7 [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm"
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none w-full text-xs md:text-sm h-7 
+                        [&::-webkit-calendar-picker-indicator]:opacity-100 
+                        [&::-webkit-calendar-picker-indicator]:block 
+                        [&::-webkit-calendar-picker-indicator]:w-4 
+                        [&::-webkit-calendar-picker-indicator]:h-4
+                        [&::-webkit-input-placeholder]:text-xs 
+                        [&::-webkit-input-placeholder]:md:text-sm"
                       style={{ colorScheme: 'light' }}
                       min={new Date().toISOString().split('T')[0]}
                     />
