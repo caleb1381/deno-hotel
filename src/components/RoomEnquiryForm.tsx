@@ -392,18 +392,22 @@ const FormContainer = () => {
             control={form.control}
             name="acceptTerms"
             render={({ field }) => (
-              <FormItem className="flex items-start space-x-1">
-                <FormControl>
-                  <input
-                    type="checkbox"
-                    {...{...field, value: undefined}}
-                    className="mt-0.5 h-3 w-3 rounded border-gray-300"
-                  />
-                </FormControl>
-                <FormLabel className="text-[10px] md:text-xs">
-                  I accept the <a href="#" className="text-blue-600">Terms & Conditions</a> and <a href="#" className="text-blue-600">Privacy Policy</a>
-                </FormLabel>
-                <FormMessage className="text-[10px]" />
+              <FormItem className="flex items-start space-x-2">
+                <div className="pt-[2px]">
+                  <FormControl>
+                    <input
+                      type="checkbox"
+                      {...{...field, value: undefined}}
+                      className="h-3 w-3 rounded border-gray-300"
+                    />
+                  </FormControl>
+                </div>
+                <div>
+                  <FormLabel className="text-[10px] md:text-xs leading-none block">
+                    I accept the <a href="#" className="text-blue-600">Terms & Conditions</a> and <a href="#" className="text-blue-600">Privacy Policy</a>
+                  </FormLabel>
+                  <FormMessage className="text-[10px]" />
+                </div>
               </FormItem>
             )}
           />
