@@ -115,12 +115,8 @@ export const FormSchema = z.object({
   phoneNumber: z.string().length(11, { message: "Please enter a valid phone number" }),
   address: z.string().optional(),
   roomType: z.string().min(1, { message: "Please select a room type" }),
-  arrival: z.date({
-    required_error: "A check in date is required.",
-  }),
-  departure: z.date({
-    required_error: "A check out date is required.",
-  }),
+  arrival: z.string(),
+  departure: z.string(),
   adult: z.number().min(1),
   children: z.number(),
   specialRequests: z.string().optional(),
@@ -131,6 +127,8 @@ export const FormSchema = z.object({
 
 const FormContainer = () => {
   const [showSuccess, setShowSuccess] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -141,12 +139,26 @@ const FormContainer = () => {
 
   const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
     try {
-      console.log(values); // For testing, replace with your submission logic
+      setIsSubmitting(true);
+      
+      const response = await fetch('/api/reservations', {
+        method: 'POST',
+        headers: {  
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) throw new Error('Failed to submit');
+
       setShowSuccess(true);
       form.reset();
       setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
       console.error('Error submitting form:', error);
+      // You might want to show an error message to the user
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -399,8 +411,9 @@ const FormContainer = () => {
           <Button
             type="submit"
             className="w-full bg-gray-900 text-white h-8 text-xs md:text-sm"
+            disabled={isSubmitting}
           >
-            Complete Reservation
+            {isSubmitting ? 'Submitting...' : 'Complete Reservation'}
           </Button>
         </form>
       </div>
