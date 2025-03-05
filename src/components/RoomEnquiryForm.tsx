@@ -84,22 +84,23 @@ export function EnquiryForm() {
         </Button>
       </DrawerTrigger>
       <DrawerContent 
-        className="border-none bg-lime"
+        className="border-none bg-lime h-[80vh] [&>div:first-child]:hidden [&>[data-radix-drawer-close]]:hidden [&>[data-radix-drawer-handle]]:hidden [&>[data-radix-drawer-drag-handle]]:hidden [&>div[data-state]]:hidden [&>[data-radix-drawer-drag-handle]]:hidden"
         onPointerDown={(e) => e.stopPropagation()}
         onTouchStart={(e) => e.stopPropagation()}
+        onInteractOutside={(e) => e.preventDefault()}
+        onDrag={(e) => e.preventDefault()}
       >
-        <div className="sticky top-0 z-10 bg-lime">
-          <DrawerClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-            <X className="h-6 w-6" />
+        <div className="sticky top-0 z-10 bg-lime py-1">
+          <DrawerClose className="absolute right-2 top-2">
+            <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
           </DrawerClose>
-          <h2 className="text-center text-2xl lg:text-4xl font-playfair text-gray-900 pt-4">
+          <h2 className="text-center text-base font-playfair text-gray-900 pt-1">
             Room Enquiry Form
           </h2>
         </div>
-        <div className="h-[75vh] overflow-y-scroll px-6 touch-pan-y">
+        <div className="overflow-y-auto px-2 pb-16 h-[calc(80vh-2rem)]">
           <FormContainer />
-          <div className="h-10"></div>
         </div>
       </DrawerContent>
     </Drawer>
@@ -112,8 +113,6 @@ export const FormSchema = z.object({
   }),
   email: z.string().email({ message: "Please enter a valid Email ID" }),
   phoneNumber: z.string().length(11, { message: "Please enter a valid phone number" }),
-  address: z.string().optional(),
-  accountNumber: z.string().min(8, { message: "Please enter a valid account number" }),
   roomType: z.string().min(1, { message: "Please select a room type" }),
   arrival: z.date({
     required_error: "A check in date is required.",
@@ -140,22 +139,8 @@ const FormContainer = () => {
   });
 
   const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
-    const emailBody = `
-Name: ${values.name}
-Email: ${values.email}
-Phone: ${values.phoneNumber}
-Address: ${values.address || 'Not provided'}
-Account Number: ${values.accountNumber}
-Room Type: ${values.roomType}
-Arrival: ${values.arrival.toLocaleDateString()}
-Departure: ${values.departure.toLocaleDateString()}
-Adults: ${values.adult}
-Children: ${values.children}
-Special Requests: ${values.specialRequests || 'None'}
-    `.trim();
-
     try {
-      window.location.href = `mailto:denohotels@gmail.com?subject=New Room Enquiry&body=${encodeURIComponent(emailBody)}`;
+      console.log(values); // For testing, replace with your submission logic
       setShowSuccess(true);
       form.reset();
       setTimeout(() => setShowSuccess(false), 3000);
@@ -168,15 +153,14 @@ Special Requests: ${values.specialRequests || 'None'}
     <Form {...form}>
       <div className="relative max-w-5xl mx-auto">
         {showSuccess && (
-          <div className="fixed top-0 left-0 right-0 bg-green-500 text-white p-3 text-center rounded-md z-50">
-            Form submitted successfully! Check your email client.
+          <div className="fixed top-0 left-0 right-0 bg-green-500 text-white p-2 text-center text-sm z-50">
+            Reservation submitted successfully!
           </div>
         )}
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-          {/* Guest Information Section */}
-          <div className="space-y-3">
-            <h2 className="text-lg font-semibold border-b pb-1">Guest Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-2">
+          {/* Personal Details Section */}
+          <div className="space-y-1.5">
+            <div className="grid grid-cols-1 gap-1.5">
               <FormField
                 control={form.control}
                 name="name"
@@ -186,10 +170,10 @@ Special Requests: ${values.specialRequests || 'None'}
                       <Input
                         placeholder="Name"
                         {...field}
-                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none"
+                        className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8"
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-[10px]" />
                   </FormItem>
                 )}
               />
@@ -202,10 +186,10 @@ Special Requests: ${values.specialRequests || 'None'}
                       <Input
                         placeholder="Email"
                         {...field}
-                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none"
+                        className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8"
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-[10px]" />
                   </FormItem>
                 )}
               />
@@ -218,177 +202,132 @@ Special Requests: ${values.specialRequests || 'None'}
                       <Input
                         placeholder="Phone No."
                         {...field}
-                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none"
+                        className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8"
                         type="number"
                       />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="Address (Optional)"
-                        {...field}
-                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none"
-                      />
-                    </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-[10px]" />
                   </FormItem>
                 )}
               />
             </div>
           </div>
 
-          {/* Payment & Stay Details in Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Payment Section */}
-            <div className="space-y-3">
-              <h2 className="text-lg font-semibold border-b pb-1">Payment & Billing</h2>
-              <FormField
-                control={form.control}
-                name="accountNumber"
-                render={({ field }) => (
-                  <FormItem>
+          {/* Stay Details Section */}
+          <div className="space-y-1.5">
+            <FormField
+              control={form.control}
+              name="roomType"
+              render={({ field }) => (
+                <FormItem>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <Input
-                        placeholder="Account Number"
-                        {...field}
-                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none"
-                      />
+                      <SelectTrigger className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8">
+                        <SelectValue placeholder="Select room type" />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <p className="text-xs text-gray-600">Please send proof of payment</p>
-            </div>
-
-            {/* Stay Details Section */}
-            <div className="space-y-3">
-              <h2 className="text-lg font-semibold border-b pb-1">Stay Details</h2>
-              <FormField
-                control={form.control}
-                name="roomType"
-                render={({ field }) => (
-                  <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none">
-                          <SelectValue placeholder="Select room type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="bg-white text-gray-950">
-                        <SelectItem value="deluxe">Deluxe Room</SelectItem>
-                        <SelectItem value="studio">Studio Room</SelectItem>
-                        <SelectItem value="Executive">Executive Room</SelectItem>
-                        <SelectItem value="presidential">Presidentiial Room</SelectItem>
-                        <SelectItem value="Ambassadorial">Ambassadorial Room</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                    <SelectContent className="bg-white text-gray-950 text-xs">
+                      <SelectItem value="deluxe">Deluxe Room</SelectItem>
+                      <SelectItem value="studio">Studio Room</SelectItem>
+                      <SelectItem value="executive">Executive Room</SelectItem>
+                      <SelectItem value="presidential">Presidential Room</SelectItem>
+                      <SelectItem value="ambassadorial">Ambassadorial Room</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-[10px]" />
+                </FormItem>
+              )}
+            />
           </div>
 
           {/* Dates and Guests Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <FormField
-                control={form.control}
-                name="arrival"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm">Arrival Date</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        {...field}
-                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 rounded-none"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="departure"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm">Departure Date</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="date"
-                        {...field}
-                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                        className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 rounded-none"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+          <div className="grid grid-cols-1 gap-1.5">
+            <FormField
+              control={form.control}
+              name="arrival"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-[10px] md:text-xs">Arrival Date</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      {...field}
+                      value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none w-full [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:block text-xs md:text-sm h-7"
+                      style={{ colorScheme: 'light' }}
+                      min={new Date().toISOString().split('T')[0]}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[10px]" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="departure"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">Departure Date</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="date"
+                      {...field}
+                      value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none w-full [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:block text-sm h-7"
+                      style={{ colorScheme: 'light' }}
+                      min={new Date().toISOString().split('T')[0]}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[10px]" />
+                </FormItem>
+              )}
+            />
+          </div>
 
-            <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <FormField
-                  control={form.control}
-                  name="adult"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Adults</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          min="1"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value))}
-                          className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 rounded-none"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="children"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Children</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          min="0"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value))}
-                          className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 rounded-none"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
+          {/* Adults/Children fields */}
+          <div className="grid grid-cols-2 gap-2">
+            <FormField
+              control={form.control}
+              name="adult"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">Adults</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="1"
+                      {...field}
+                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none text-xs md:text-sm h-7"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[10px]" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="children"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs">Children</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="0"
+                      {...field}
+                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none text-xs md:text-sm h-7"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[10px]" />
+                </FormItem>
+              )}
+            />
           </div>
 
           {/* Special Requests */}
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <FormField
               control={form.control}
               name="specialRequests"
@@ -398,10 +337,10 @@ Special Requests: ${values.specialRequests || 'None'}
                     <Textarea
                       placeholder="Special Requests (Optional)"
                       {...field}
-                      className="bg-transparent ring-0 border-0 border-b-2 border-slate-950 placeholder:text-slate-900 rounded-none resize-none h-16"
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none resize-none h-12 text-xs md:text-sm min-h-[2rem]"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
@@ -412,27 +351,27 @@ Special Requests: ${values.specialRequests || 'None'}
             control={form.control}
             name="acceptTerms"
             render={({ field }) => (
-              <FormItem className="flex items-start space-x-2">
+              <FormItem className="flex items-start space-x-1">
                 <FormControl>
                   <input
                     type="checkbox"
                     {...{...field, value: undefined}}
-                    className="mt-1 h-4 w-4 rounded border-gray-300"
+                    className="mt-0.5 h-3 w-3 rounded border-gray-300"
                   />
                 </FormControl>
-                <FormLabel className="text-sm">
+                <FormLabel className="text-[10px] md:text-xs">
                   I accept the <a href="#" className="text-blue-600">Terms & Conditions</a> and <a href="#" className="text-blue-600">Privacy Policy</a>
                 </FormLabel>
-                <FormMessage />
+                <FormMessage className="text-[10px]" />
               </FormItem>
             )}
           />
 
           <Button
             type="submit"
-            className="w-full md:w-auto bg-gray-900 text-white px-8 h-10"
+            className="w-full bg-gray-900 text-white h-8 text-xs md:text-sm"
           >
-            Complete Registration
+            Complete Reservation
           </Button>
         </form>
       </div>
