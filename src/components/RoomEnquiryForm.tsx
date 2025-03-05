@@ -170,7 +170,7 @@ const FormContainer = () => {
                       <Input
                         placeholder="Name"
                         {...field}
-                        className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8"
+                        className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8 [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm [&:not(:placeholder-shown)]:text-xs [&:not(:placeholder-shown)]:md:text-sm"
                       />
                     </FormControl>
                     <FormMessage className="text-[10px]" />
@@ -186,7 +186,7 @@ const FormContainer = () => {
                       <Input
                         placeholder="Email"
                         {...field}
-                        className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8"
+                        className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8 [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm [&:not(:placeholder-shown)]:text-xs [&:not(:placeholder-shown)]:md:text-sm"
                       />
                     </FormControl>
                     <FormMessage className="text-[10px]" />
@@ -202,7 +202,7 @@ const FormContainer = () => {
                       <Input
                         placeholder="Phone No."
                         {...field}
-                        className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8"
+                        className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8 [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm [&:not(:placeholder-shown)]:text-xs [&:not(:placeholder-shown)]:md:text-sm"
                         type="number"
                       />
                     </FormControl>
@@ -222,7 +222,7 @@ const FormContainer = () => {
                 <FormItem>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8">
+                      <SelectTrigger className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none text-xs md:text-sm h-8 [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm [&:not(:placeholder-shown)]:text-xs [&:not(:placeholder-shown)]:md:text-sm">
                         <SelectValue placeholder="Select room type" />
                       </SelectTrigger>
                     </FormControl>
@@ -253,7 +253,7 @@ const FormContainer = () => {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none w-full [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:block text-xs md:text-sm h-7"
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none w-full [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:block text-xs md:text-sm h-7 [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm"
                       style={{ colorScheme: 'light' }}
                       min={new Date().toISOString().split('T')[0]}
                     />
@@ -273,7 +273,7 @@ const FormContainer = () => {
                       type="date"
                       {...field}
                       value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
-                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none w-full [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:block text-sm h-7"
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none w-full [&::-webkit-calendar-picker-indicator]:opacity-100 [&::-webkit-calendar-picker-indicator]:block text-sm h-7 [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm"
                       style={{ colorScheme: 'light' }}
                       min={new Date().toISOString().split('T')[0]}
                     />
@@ -298,7 +298,7 @@ const FormContainer = () => {
                       min="1"
                       {...field}
                       onChange={(e) => field.onChange(parseInt(e.target.value))}
-                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none text-xs md:text-sm h-7"
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none text-xs md:text-sm h-7 [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </FormControl>
                   <FormMessage className="text-[10px]" />
@@ -317,7 +317,7 @@ const FormContainer = () => {
                       min="0"
                       {...field}
                       onChange={(e) => field.onChange(parseInt(e.target.value))}
-                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none text-xs md:text-sm h-7"
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 rounded-none text-xs md:text-sm h-7 [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </FormControl>
                   <FormMessage className="text-[10px]" />
@@ -337,7 +337,7 @@ const FormContainer = () => {
                     <Textarea
                       placeholder="Special Requests (Optional)"
                       {...field}
-                      className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none resize-none h-12 text-xs md:text-sm min-h-[2rem]"
+                      className="bg-transparent ring-0 border-0 border-b border-slate-950 placeholder:text-slate-900 rounded-none resize-none h-12 text-xs md:text-sm min-h-[2rem] [&::-webkit-input-placeholder]:text-xs [&::-webkit-input-placeholder]:md:text-sm [&:not(:placeholder-shown)]:text-xs [&:not(:placeholder-shown)]:md:text-sm"
                     />
                   </FormControl>
                   <FormMessage className="text-[10px]" />
